@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.korea.gfair.mapper.MemberMapper">
+
+	<!--==================== 이진성 ====================-->
+	<!--==================== 이진성 ====================-->
+	<!--==================== 이진성 ====================-->
+	<select id="selectCheckCBNO" resultType="int">
+		<![CDATA[
+			SELECT count(cbno)
+			FROM tbl_member
+			WHERE cbno = #{cbno}
+		]]>
+	</select>
+	
+	<select id="selectCheckID" resultType="int">
+		<![CDATA[
+			SELECT count(memberid)
+			FROM tbl_member
+			WHERE memberid = #{memberid}
+		]]>
+	</select>
+	
+		
+	<select id="selectCheckPhone" resultType="int">
+		<![CDATA[
+			SELECT count(phone)
+			FROM tbl_member
+			WHERE phone = #{phone}
+		]]>
+	</select>
+	
+	
+	
+	<insert id="insertMember_c">
+		<selectKey keyProperty="fid" order="BEFORE" resultType="int">
+		<![CDATA[
+			SELECT 
+				LAST_NUMBER - 1
+			FROM 
+				user_sequences 
+			WHERE 
+				SEQUENCE_NAME = 'ISEQ$$_103229'
+		]]>
+		</selectKey>
+
+		<![CDATA[
+			INSERT INTO tbl_member(mno, memberid, memberpw, membername, memberaddress, phone, email, cbno, fid, membertype)
+			VALUES("ADMIN"."ISEQ$$_103232".nextval, #{memberid}, #{memberpw}, #{membername}, #{memberaddress}, #{phone}, #{email}, #{cbno}, #{fid}, #{membertype})
+		]]>
+	</insert>
+	
+	
+	<!-- FILE UPLOAD -->
+	<insert id="insertFile">
+		<![CDATA[
+			INSERT INTO tbl_uploadfile(fid, frename, fpath, forname)
+			VALUES("ADMIN"."ISEQ$$_103229".nextval, #{frename}, #{fpath}, #{forname})
+		]]>
+	</insert>
+	
+	
+	
+	
+	<!-- 로그인 처리부분 -->
+    <select id="selectUser" resultType="com.korea.gfair.domain.MemberVO">
+    	<![CDATA[
+			SELECT
+	            *
+	        FROM
+	            tbl_member
+	        WHERE
+	            memberid = #{memberid}
+	        AND 
+	            memberpw = #{memberpw}
+	        AND
+	        	drop_tf = 'F'
+    	]]>
+	</select>
+
+
+
+	<!-- 아이디찾기 -->
+	<select id="selectFindID" resultType="string">
+		<![CDATA[
+			SELECT
+				memberid
+			FROM
+				tbl_member
+			WHERE
+				email = #{email}
+			AND
+				membertype = '기업'
+		]]>
+	</select>
+	
+		<!-- 아이디찾기 -->
+	<select id="selectCountEmail" resultType="int">
+		<![CDATA[
+			SELECT
+				count(email)
+			FROM
+				tbl_member
+			WHERE
+				email = #{email}
+			AND
+				membertype = '기업'
+		]]>
+	</select>
+	
+
+	<!-- 비밀번호찾기 -->
+	<select id="selectFindPW" resultType="int">
+		<![CDATA[
+			SELECT
+				count(*)
+			FROM 
+				tbl_member
+			WHERE
+				memberid = #{memberid}
+			AND
+				cbno = #{cbno}
+			AND
+				email = #{email}
+		]]>
+	</select>
+	
+	<!-- 비밀번호를 임시비밀번호로 변경 -->
+	<update id="updatePW">
+		<![CDATA[
+			UPDATE 
+				tbl_member
+			SET
+				memberpw = #{memberpw}	
+			WHERE
+				memberid = #{memberid}			
+		]]>
+	</update>
+	
+	
+	<!--==================== 김희용 ====================-->
+	<!--==================== 김희용 ====================-->
+	<!--==================== 김희용 ====================-->
+	<select id="selectMemberId" resultType="int">
+		SELECT count(*)
+		FROM tbl_member
+		WHERE memberid = #{memberid}
+	</select>
+	
+	<select id="selectPhone" resultType="int">
+		SELECT count(*)
+		FROM tbl_member
+		WHERE phone = #{phone}
+	</select>
+	
+	
+	<select id="selectEmail" resultType="int">
+		SELECT count(*)
+		FROM tbl_member
+		WHERE email = #{email}
+	</select>
+	
+	<select id="selectFindId" resultType="String">
+		SELECT memberid
+		FROM tbl_member
+		WHERE email = #{email}
+		AND membertype = '개인'
+		
+	</select>
+	
+	<select id="selectFindPw" resultType="int">
+		SELECT count(*) 
+		FROM tbl_member
+		WHERE memberid = #{memberid}
+		AND email = #{email}
+		AND membertype = '개인'
+	</select>
+	
+	<update id="updatePw">
+        UPDATE tbl_member 
+        SET memberpw = #{pw}
+		WHERE memberid = #{memberid}
+		AND email = #{email}
+		AND membertype = '개인'
+	</update>
+	
+	<insert id="insertMember">
+	
+<!-- 	<selectKey keyProperty="mno" order="BEFORE" resultType="int">
+      select mno_seq.nextVal FROM dual
+    </selectKey> -->
+	insert into tbl_member
+	(
+	    mno,
+	    memberid,
+	    memberpw,
+	    membername,
+	    memberaddress,
+	    phone,
+	    email,
+	    membertype
+    )
+	values(
+		"ADMIN"."ISEQ$$_103232".nextval,
+		#{memberid},
+		#{memberpw},
+		#{membername},
+		#{memberaddress},
+		#{phone},
+		#{email},
+		'개인')
+	</insert>
+   
+   <!--==================== 원승대 ====================-->
+   <!--==================== 원승대 ====================-->
+   <!--==================== 원승대 ====================-->
+	<select id="get" resultType="com.korea.gfair.domain.MemberVO">
+        <![CDATA[ 
+            SELECT
+                *
+            FROM
+                tbl_member
+            WHERE
+                memberid = #{memberid}
+        ]]>
+    </select>
+       
+
+</mapper>
