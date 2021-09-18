@@ -22,7 +22,7 @@
 <body>
 	<h1>main.jsp</h1>
 	<hr>
-	
+	 
 	<button type="button" id="logout">Logout</button>
 
 </body>
